@@ -1,0 +1,5 @@
+docker run  --name consul-1  -p 8200:8200 -p 8500:8500 -h consul-1 consul agent -server -bootstrap-expect 3 -ui -client 0.0.0.0
+JOIN_IP="$(docker inspect -f '{{.NetworkSettings.IPAddress}}' consul-1)"
+docker run -d  --name consul-2  -h consul-2 consul agent -server -join $JOIN_IP
+docker run -d --name consul-3  -h consul-3 consul agent -server -join $JOIN_IP
+docker run -d --name consul-agent -h consul-agent consul agent -join $JOIN_IP
